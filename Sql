@@ -1,0 +1,36 @@
+-- Create schema (optional)
+CREATE SCHEMA IF NOT EXISTS recipe;
+
+-- Table "dishes"
+CREATE TABLE IF NOT EXISTS recipe.dish (
+  dish_id UUID PRIMARY KEY,
+  name TEXT NOT NULL,
+  weight REAL,
+  coloris TEXT,
+  protin REAL,
+  fat REAL,
+  carbon REAL,
+);
+
+-- Table "ingredients"
+CREATE TABLE IF NOT EXISTS recipe.ingredient (
+  ingredient_id UUID PRIMARY KEY,
+  name TEXT NOT NULL,
+);
+
+-- Table "recipe_ingredient" (relationship between dishes and ingredients)
+CREATE TABLE IF NOT EXISTS recipe.dish_ingredient (
+  dish_ingredient_id UUID PRIMARY KEY,
+  dish_id UUID NOT NULL,
+  ingredient_id UUID NOT NULL,
+  amount REAL,
+  FOREIGN KEY (dish_id) REFERENCES recipe.dish (dish_id),
+  FOREIGN KEY (ingredient_id) REFERENCES recipe.ingredient (ingredient_id),
+);
+
+-- Create unique indexes (optional, for faster querying)
+CREATE UNIQUE INDEX dish_name_idx ON recipe.dish (name);
+CREATE UNIQUE INDEX ingredient_name_idx ON recipe.ingredient (name);
+CREATE UNIQUE INDEX dish_ingredient_idx ON recipe.dish_ingredient (dish_id, ingredient_id);
+
+COMMIT;
